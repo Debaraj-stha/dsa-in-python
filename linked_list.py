@@ -12,8 +12,6 @@ class LinkedList:
         newNode.next = self.head
         self.head = newNode
         return 1
-
-        
         
     def printList(self):
         temp=self.head
@@ -237,7 +235,106 @@ class LinkedList:
     
 
     
-
+    def addAll(self, *args):
+        for value in args:
+            self.insertAtLast(value)
+            
+    def isEmpty(self):
+        return self.head is None
+    
+    def contains(self,value):
+        #check if given value is present in list or not
+        current_node=self.head
+        while current_node.next:
+            current_node=current_node.next
+            if current_node.data==value:
+                return True
+        return False
+    
+    def find(self,value):
+        #find given element
+        current_node=self.head
+        while current_node.next:
+            current_node=current_node.next
+            if current_node.data==value:
+                return current_node.data
+        return None    
+    def getTail(self):
+        #return lastnode head
+         if self.head is None:
+             return None
+         else:
+             self.reverse()
+             head= self.head
+             self.reverse()
+             return head
+         
+    def getHead(self):
+        #return first node head
+         return self.head
+     
+    def merge(self, other):
+        #merge two linked lists
+         if self.head is None:
+             self.head=other.head
+             return
+         current=self.head
+         while current.next:
+             current=current.next
+         current.next=other.head
+         
+         
+    def count(self,value):
+        #return number of times occurrence of value
+        if self.head is None:
+            return 0
+        count=0
+        current_node=self.head
+        while current_node:
+            if current_node.data==value:
+                count+=1
+            current_node=current_node.next
+        return count
+    
+    
+    def split(self,value):
+        #split  the list into two lists from given value
+        if self.head is None:
+            return None,None
+        prev=None
+        new_head=None
+        current_node=self.head
+        while current_node:
+            if current_node.data==value:
+                new_head=current_node
+                break
+            prev=current_node
+            current_node=current_node.next
+        if prev:
+            prev.next=None
+        return self.head,new_head
+    def tostring(self):
+        values=[]
+        current_node=self.head
+        while current_node:
+            values.append(current_node.data)
+            current_node=current_node.next
+        return ",".join(map(str,values))
+    
+    
+    def removeDuplicate(self):
+        if self.head is None:
+            return
+        
+        current_node = self.head
+        found_element=[]
+        while current_node and current_node.next:
+            if current_node.next.data == current_node.data or  current_node.data  in found_element or current_node.next.data  in found_element:
+                current_node.next = current_node.next.next
+            else:
+                found_element.append(current_node.data)
+                current_node = current_node.next
+               
     
 if __name__=="__main__":
      li=LinkedList()

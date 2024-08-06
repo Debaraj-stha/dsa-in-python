@@ -21,7 +21,7 @@ if __name__=='__main__':
     print("Name\tWeight\tValue\tRatio")
     for item in items:
         item.display()
-    items.sort()
+    items.sort(key=lambda x: x.ratio,reverse=True)
     print("Items after sorting")
     print("Name\tWeight\tValue\tRatio")
     for item in items:
