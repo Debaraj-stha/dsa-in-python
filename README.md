@@ -16,8 +16,12 @@ This repository contains implementations of various data structures in Python, a
     - [Graphs](#graphs)
     - [Hash Tables](#hash-tables)
     - [Heaps](#heaps)
-5. [Contributing](#contributing)
-6. [License](#license)
+5.[Designa nd analysis of algorithms](#designa-n-analysis-of-algorithms)
+    -[seraching](#searching)
+    -[sorting](#sorting)
+    
+6. [Contributing](#contributing)
+7. [License](#license)
 
 ## Introduction
 
@@ -60,7 +64,7 @@ Refer to the individual files for more detailed usage examples.
 
 Arrays are a fundamental data structure consisting of a collection of elements, each identified by an index.
 
-File: `arrays.py`
+File: `array_1.py`
 
 ### Linked Lists
 
@@ -103,6 +107,15 @@ File: `hash_table.py`
 Heaps are a specialized tree-based data structure that satisfies the heap property. In a max heap, for any given node I, the value of I is greater than or equal to the values of its children.
 
 File: `heap.py`
+## designa-n-analysis-of-algorithms
+### searching
+#### linear searching
+Linear searching (also known as sequential searching) is a fundamental algorithm for finding a specific value within a list or array. In linear search, you examine each element of the list one by one until you find the target value or reach the end of the list.
+
+#### binary searching
+Binary search is a highly efficient algorithm for finding an item from a sorted list of items. Unlike linear search, which checks each element sequentially, binary search repeatedly divides the search interval in half, making it much faster for large lists.
+
+### sorting
 
 ## Contributing
 

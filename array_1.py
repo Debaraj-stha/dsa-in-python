@@ -74,12 +74,7 @@ class Array:
                         
     def reverse(self):
         """ reverse order of list element"""
-        start=0
-        end=self.length()-1
-        while start<end:
-            self.data[start],self.data[end]=self.data[end],self.data[start]
-            start+=1
-            end-=1
+        self.data=self.data[::-1]
             
     def isEmpty(self):
         """check if list is empty"""
@@ -192,25 +187,27 @@ class Array:
         
 if __name__ == "__main__":
     a = Array()
-    # a.data = [1, 2, 3]
-    # print(a.length())  # Output: 3
-    # a.printArr()       # Output: [1, 2, 3]
-    # print(type(a)) # Output: [1, 2, 3
-    # a.insertAt(1, 78)
-    # a.printArr()  
-    # # a.remove(3)
-    # a.printArr()
-    # a.append(3)
-    # a.append(1)
-    # a.printArr()
-    # # a.removeAt(2)
-    # a.remove(78)
+    a.data = [1, 2, 3]
+    print(a.length())  
+    a.printArr()      
+    print(type(a))
+    a.insertAt(1, 78)
+    a.printArr()  
+    # a.remove(3)
+    a.printArr()
+    a.append(3)
+    a.append(1)
+    a.printArr()
+    # a.removeAt(2)
+    a.remove(78)
     a.data=[3,8,0,8]
     a.append(33,9,93,2)
     a.printArr()
     a.insertAtFirst(122)
     a.printArr()
-    # a.sort(reverse=True)
+    a.reverse()
+    a.printArr()
+    a.sort(reverse=True)
     a.reverse()
     a.printArr()
     i=a.indexOf(122)
