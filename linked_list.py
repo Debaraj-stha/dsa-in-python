@@ -45,7 +45,7 @@ class LinkedList:
         return count
     
     
-    def insert(self,value,position)->int:
+    def insert(self,value,position:int)->int:
         current_node=self.head
         if position==0:
           return  self.insertAtFirst(value)
@@ -66,7 +66,7 @@ class LinkedList:
             return 1
                
             
-    def removeAt(self,index)->int:
+    def removeAt(self,index:int)->int:
         current_node=self.head
         if  current_node is None:
             raise ValueError("Empty list")
