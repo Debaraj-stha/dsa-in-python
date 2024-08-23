@@ -1,55 +1,29 @@
+from hashlib import new
+
+
 class Node:
-    def __init__(self, data):
-        self.data = data
-        self.prev = None  # Pointer to the previous node
-        self.next = None  # Pointer to the next node
+    def __init__(self,key):
+        self.key=key
+        self.prev=None
+        self.next=None
 
-class DoubleCircularLinkedList:
+class CircularDoubleLinkedList:
     def __init__(self):
-        self.head = None
-        self.tail = None
-
-    def append(self, data):
-        new_node = Node(data)
-        if self.head is None:  # If the list is empty
-            self.head = new_node
-            self.tail = new_node
-            new_node.next = new_node  # Point to itself, making it circular
-            new_node.prev = new_node  # Point to itself, making it circular
-        else:
-            new_node.prev = self.tail  # Set the new node's previous to the current tail
-            new_node.next = self.head  # Set the new node's next to the head
-            self.tail.next = new_node  # Set the current tail's next to the new node
-            self.head.prev = new_node  # Set the head's previous to the new node
-            self.tail = new_node  # Update the tail to be the new node
-
-    def display(self):
-        if self.head is None:
-            print("List is empty")
-            return
-        
-        current = self.head
-        while True:
-            print(current.data, end=" ")
-            current = current.next
-            if current == self.head:  # If we've come full circle
-                break
-        print()
+        self.head=None
+        self.tail=None
         
     def length(self):
-        if self.head is None:
-            return 0
-        current = self.head
-        count = 0
+        count=0
+        current=self.head
         while True:
-            count += 1
-            current = current.next
-            if current == self.head:
+            current=current.next
+            count+=1
+            if  current is self.head:
                 break
         return count
-
-    def insertAtfirst(self, key):
-        new_node = Node(key)
+        
+    def insertAtFirst(self,key):
+        new_node=Node(key)
         if self.head is None:
             self.head = new_node
             self.tail = new_node
@@ -61,62 +35,176 @@ class DoubleCircularLinkedList:
             self.head.prev = new_node
             self.tail.next = new_node
             self.head = new_node
-
-    def removeAt(self, index: int):
+            
+    def insertAtLast(self,key):
         if self.head is None:
-            raise ValueError("List is empty")
-        elif index < 0 or index >= self.length():
-            raise ValueError("Index out of range")
+            self.insertAtFirst(key)
         else:
-            current = self.head
-            if index == 0:  # Removing the head
-                if self.head == self.tail:  # Only one element
-                    self.head = None
-                    self.tail = None
-                else:
-                    self.head = self.head.next
-                    self.head.prev = self.tail
-                    self.tail.next = self.head
-            elif index == self.length() - 1:  # Removing the tail
-                current = self.tail
-                self.tail = self.tail.prev
-                self.tail.next = self.head
-                self.head.prev = self.tail
-            else:  # Removing a middle element
-                for _ in range(index):
-                    current = current.next
-                current.prev.next = current.next
-                current.next.prev = current.prev
+            new_node=Node(key)
+            new_node.prev=self.tail
+            new_node.next=self.head
+            self.tail.next=new_node
+            self.head.prev=new_node
+            self.tail=new_node
+            
+    def insertAt(self,key,index:int):
+        if self.head is None:
+            self.insertAtFirst(key)
+        elif index < 0 or index > self.length():
+            raise IndexError("Index out of range")
+        elif index==self.length()+1:
+            self.insertAtLast(key)
+        else:
+            print("else")
+            prev=None
+            current=self.head
+            for i in range(index):
+                prev=current
+                current=current.next
+                if current==prev:
+                    raise IndexError("Index out of range")
+            new_node=Node(key)
+            new_node.next=current
+            new_node.prev=prev
+            current.prev=new_node
+            prev.next=new_node
 
-    def remove(self, value):
+    def removeAt(self,index):
         if self.head is None:
             raise ValueError("List is empty")
+        elif index<0 or  index>=self.length():
+            raise IndexError("Index out of range")
+        else:
+            prev=None
+            current=self.head
+            for i in range(index): #traversing the list  to index
+                prev=current
+                current=current.next
+                if current==prev:
+                    raise IndexError("Index out of range")
+            prev.next=current.next #removing the given index from list
+    def remove(self,key):
+        if self.head is None:
+            raise ValueError("List is empty")
+        elif self.head.key==key: #checking if key is head node
+            self.removeAt(0)
+            return
+        prev=None
+        current=self.head
+        while current.key!=key:
+            prev=current
+            current=current.next
+            if current==prev:
+                raise ValueError("Key not found in the list")
+       
+            if current == self.head:  # Removing the head node
+                if self.head == self.tail:  # List has only one node
+                    self.head = None
+                    self.tail = None    
+                else:
+                    self.head = current.next
+                    self.tail.next = self.head
+                    self.head.prev = self.tail
+            else:  # Removing a node other than the head
+                prev.next = current.next
+                current.next.prev = prev
+                if current == self.tail:  # Removing the tail node
+                    self.tail = prev
+    def append(self,*args):
+        for key in args:
+            self.insertAtLast(key)
+            
+    def display(self):
+        if self.head is None:
+            print("List is empty")
+            return
         current = self.head
-        index = 0
         while True:
-            if current.data == value:
-                self.removeAt(index)
-                return
+            print(current.key, end=" ")
             current = current.next
-            index += 1
             if current == self.head:  # If we've come full circle
                 break
-        raise ValueError("Value not found in the list")
-
-# Example usage:
-dll = DoubleCircularLinkedList()
-dll.append(10)
-dll.append(20)
-dll.append(30)
-dll.insertAtfirst(5)
-
-dll.display()  # Output: 5 10 20 30
-
-dll.removeAt(1)
-dll.display()  # Output: 5 20 30
-
-dll.remove(20)
-dll.display()  # Output: 5 30
-
-dll.remove(5)
-dll.display()  # Output: 30
+        print()
+    def findIndexOf(self, key): #return index of given elements
+        current=self.head
+        index=0
+        while current:
+            if current.key==key:
+                return index
+            current=current.next
+            index+=1
+        return -1
+    
+    def contains(self, key): #check if list contains given element
+        current=self.head
+        while current:
+            if current.key==key:
+                return True
+            current=current.next
+        return False
+    
+    def reverse(self):
+        if self.head is None:
+            return
+        
+        current = self.head
+        prev = None
+        
+        while True:
+            # Swap the next and prev pointers
+            next_node = current.next
+            current.next = prev
+            current.prev = next_node
+            
+            prev = current
+            current = next_node
+            
+            # If we've looped back to the head, break the loop
+            if current == self.head:
+                break
+        
+        # Adjust the head and tail
+        self.tail = self.head
+        self.head = prev
+        
+        # Fix the circular reference
+        self.head.prev = self.tail
+        self.tail.next = self.head
+    def sort(self,reverse=False):
+        if self.head is None:
+            return
+        
+        # Convert the list to a list
+        nodes = []
+        current = self.head
+        while True:
+            nodes.append(current.key)
+            current = current.next
+            if current == self.head:
+                break
+        
+        # Sort the list
+        nodes.sort(reverse=reverse)
+        
+        # Convert the sorted list back to a circular double linked list
+        self.head = None
+        self.tail = None
+        for key in nodes:
+            self.insertAtLast(key)
+    
+if __name__=="__main__":
+    cdl=CircularDoubleLinkedList()
+    cdl.insertAtFirst(3)
+    cdl.insertAtFirst(4)
+    cdl.insertAtLast(10)
+    cdl.insertAt(6,2)
+    cdl.display()
+    cdl.remove(3)
+    cdl.append(5,9,10,41)
+    i=cdl.findIndexOf(5)
+    cdl.display()
+    cdl.reverse()
+    print(f"Index of 5 is {i}")
+    cdl.display()
+    cdl.sort()
+    cdl.display()
