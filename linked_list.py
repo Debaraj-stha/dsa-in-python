@@ -8,10 +8,12 @@ class LinkedList:
         self.head=None
         
     def insertAtFirst(self,data)->int:
-        newNode = Node(data)
-        newNode.next = self.head
-        self.head = newNode
-        return 1
+        new_node=Node(data)
+        if self.head is None:
+            self.head = new_node
+        else:
+            new_node.next=self.head
+            self.head=new_node
         
     def printList(self):
         temp=self.head
@@ -153,13 +155,7 @@ class LinkedList:
         current_node=self.head
         if current_node is None:
             return
-        prev=None
-        while current_node is not None:
-            next_node=current_node.next
-            current_node.next=prev
-            prev=current_node
-            current_node=next_node
-        self.head=prev
+      
         
         
     def append(self,value):

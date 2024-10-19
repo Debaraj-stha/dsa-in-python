@@ -9,11 +9,11 @@ class Node:
         if value < self.value:
             print(f"if {value}")
             if self.left is None:
-                self.left = Node(value) 
+                self.left = Node(value)
             else:
                 self.left.insert(value)
         else:
-          
+
             print(f"else {value}")
             if self.right is None:
                 self.right = Node(value)
@@ -21,30 +21,29 @@ class Node:
                 self.right.insert(value)
 
     def inorder(self):
-        #print left child first and right child
+        # print left child first and right child
         if self.left:
             self.left.inorder()
-        print(self.value, end=' ')
+        print(self.value, end=" ")
         if self.right:
             self.right.inorder()
 
     def preorder(self):
-        #print root first and left child
-        print(self.value, end=' ')
+        # print root first and left child
+        print(self.value, end=" ")
         if self.left:
             self.left.preorder()
         if self.right:
             self.right.preorder()
+
     def postorder(self):
-        #print left child first and right child
+        # print left child first and right child
         if self.left:
             self.left.postorder()
         if self.right:
             self.right.postorder()
-        print(self.value, end=' ')
+        print(self.value, end=" ")
 
-    
-    
     def delete(self, value):
         if not self:
             return self
@@ -68,7 +67,9 @@ class Node:
                 return temp
 
             # Node with two children
-            temp = self._minValueNode(self.right) #find minimum child of right side children
+            temp = self._minValueNode(
+                self.right
+            )  # find minimum child of right side children
             self.value = temp.value
             self.right = self.right.delete(temp.value)
 

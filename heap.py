@@ -1,4 +1,3 @@
-
 class MinHeap:
     def __init__(self):
         self.heap = []
@@ -15,7 +14,10 @@ class MinHeap:
     def _heapify_up(self, index):
         parent_index = self._parent(index)
         if index > 0 and self.heap[index] < self.heap[parent_index]:
-            self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
+            self.heap[index], self.heap[parent_index] = (
+                self.heap[parent_index],
+                self.heap[index],
+            )
             self._heapify_up(parent_index)
 
     def _heapify_down(self, index):
@@ -30,8 +32,12 @@ class MinHeap:
             smallest = right
 
         if smallest != index:
-            self.heap[index], self.heap[smallest] = self.heap[smallest], self.heap[index]
+            self.heap[index], self.heap[smallest] = (
+                self.heap[smallest],
+                self.heap[index],
+            )
             self._heapify_down(smallest)
+        print(self.heap)
 
     def insert(self, value):
         self.heap.append(value)
@@ -56,6 +62,7 @@ class MinHeap:
     def __str__(self):
         return str(self.heap)
 
+
 class MaxHeap:
     def __init__(self):
         self.heap = []
@@ -72,7 +79,10 @@ class MaxHeap:
     def _heapify_up(self, index):
         parent_index = self._parent(index)
         if index > 0 and self.heap[index] > self.heap[parent_index]:
-            self.heap[index], self.heap[parent_index] = self.heap[parent_index], self.heap[index]
+            self.heap[index], self.heap[parent_index] = (
+                self.heap[parent_index],
+                self.heap[index],
+            )
             self._heapify_up(parent_index)
 
     def _heapify_down(self, index):
@@ -112,9 +122,9 @@ class MaxHeap:
 
     def __str__(self):
         return str(self.heap)
-    
-    
-if __name__ == '__main__':
+
+
+if __name__ == "__main__":
     heap = MaxHeap()
     heap.insert(5)
     heap.insert(3)
@@ -122,6 +132,6 @@ if __name__ == '__main__':
     heap.insert(2)
     heap.insert(1)
     heap.insert(7)
-    print('Heap:', heap.heap)
-    print('Extracted:', heap.extract_max())
-    print('Heap:', heap.heap)
+    print("Heap:", heap.heap)
+    print("Extracted:", heap.extract_max())
+    print("Heap:", heap.heap)

@@ -2,3 +2,208 @@ hello world.
 high
 high
 high there.
+class Node:
+    def __init__(self, data):
+        self.data = data
+        self.next = None
+        
+        
+class CircularLinkedList:
+    def __init__(self):
+        self.head = None        
+    def insertAtFirst(self,data):
+        """_summary_
+        this method will insert data at the start of linked list
+
+        Args:
+            data (_type_): item to insert at start of linked list"""
+        new_node=Node(data)
+        if self.head is None:
+            self.head = new_node
+            new_node.next=new_node
+        else:
+            current=self.head
+            while current.next!=self.head:
+                current=current.next
+            new_node.next=self.head
+            current.next=new_node
+            self.head=new_node
+            
+    def insertAtLast(self,data):
+        """_summary_
+        this method will insert data at the end of linked list
+
+        Args:
+            data (_type_): item to insert at end of linked list"""
+        
+        if self.head is None:
+            self.inertAtFirst(data)
+        else:
+            new_node=Node(data)
+            current_node=self.head
+            while current_node.next!=self.head:
+                current_node=current_node.next
+            current_node.next=new_node
+            new_node.next=self.head
+            
+            
+    def insertAt(self,data,index:int):
+        """_summary_
+        this method will insert data at a given index of linked list
+
+        Args:
+            data (_type_): item to insert at given index of linked list
+            index (int): index at which given data should be inserted at linked list
+        """
+        if index==0:
+            self.inertAtFirst(data)
+        elif index > self.length() and index < 0:
+            raise IndexError("Index out of range")
+        elif index==self.length():
+            self.insertAtLast(data)
+        else:
+            new_node=Node(data)
+            current=self.head
+            for _ in range(index-1):
+                current=current.next
+                if current is None:
+                    raise IndexError("Index out of range")
+            new_node.next=current.next
+            current.next=new_node
+        
+            
+    def length(self):
+        """_summary_
+        returns the length of linked list
+
+        Returns:
+            int: length of linked list"""   
+        current=self.head
+        count=0
+        while current:
+            count+=1
+            current=current.next
+        return count
+            
+            
+            
+    def deleteAt(self,index):
+        """_summary_
+        deletes node at given index of linked list
+
+        Args:
+            index (int): index of node to be deleted"""
+        if index < 0 or index > self.length()-1:
+            raise IndexError("Index out of range")
+        if self.head is None:
+            raise ValueError("List is empty")
+        if index==0:
+            self.head=self.head.next
+            return
+        current=self.head
+        for _ in range(index-1):
+            current=current.next
+            if current is None:
+                raise IndexError("Index out of range")
+        current.next=current.next.next
+        
+    def delete(self,data):
+        """_summary_
+        deletes first occurrence of node with given data from linked list
+
+        Args:
+            data (_type_): data of node to be deleted"""
+        if self.head is None:
+            raise ValueError("List is empty")
+        if self.head.data==data:
+            self.head=self.head.next
+            return
+        current=self.head
+        while current.next and current.next.data!=data:
+            current=current.next
+        if current.next:
+            current.next=current.next.next
+    def display(self):
+        """_summary_
+        prints all elements of linked list"""
+        temp=self.head
+        while temp:
+            print(temp.data,end="->")
+            temp=temp.next
+            if temp == self.head:
+                break
+        print()
+        
+    def to_list(self)->list:
+        """_summary_
+        returns list of all elements of linked list
+
+        Returns:
+            list: list of all elements of linked list"""
+        result=[]
+        current=self.head
+        while current:
+            result.append(current.data)
+            current=current.next
+        return result
+    def to_dict(self)->dict:
+        """_summary_
+        returns dictionary of linked list with keys as index and values as data
+
+        Returns:
+            dict: dictionary of linked list with keys as index and values as data"""
+        result={}
+        current=self.head
+        index=0
+        while current:
+            result[index]=current.data
+            current=current.next
+            index+=1
+        return result
+    
+    def sort(self,reverse=False):
+        """_summary_
+        sorts the linked list in ascending order
+
+        Args:
+            reverse (bool, optional): if True, sorts in descending order. Defaults to False."""
+        list=self.to_list()
+        list.sort(reverse=reverse)
+        self.head=None
+        for data in list:
+            self.insertAtLast(data)
+            
+    def reverse(self):
+        """_summary_
+        reverses the linked list"""
+        prev=None
+        current_node=self.head
+        if current_node is None:
+            return
+        while current_node is not None:
+            next_node=current_node.next
+            current_node.next=prev
+            prev=current_node
+            current_node=next_node
+        self.head=prev
+            
+    def append(self,*args):
+        """_summary_
+        inserts given data at the end of linked list
+
+        Args:
+            args (_type_): items to insert at end of linked list"""
+        
+        if (type(args)!= tuple):
+            raise TypeError("All arguments must be of same type")
+        for data in args:
+            self.insertAtLast(data)
+        
+if __name__ == "__main__":
+    li=CircularLinkedList()
+    li.insertAtFirst(1)
+    li.insertAtFirst(2)
+    li.insertAtFirst(3)
+    li.insertAtLast(4)
+    li.insertAtLast(17)
+    li.display()
