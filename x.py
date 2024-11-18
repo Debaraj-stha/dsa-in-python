@@ -1,131 +1,165 @@
 class Node:
-    def __init__(self, data):
-        self.data = data
-        self.next = None
+    def __init__(self, val, next=None):
+        self.val = val
+        self.next = next
 
 
-class LinkedList:
+class CircularLinkedList:
     def __init__(self):
         self.head = None
-
-    def length(self):
-        count = 0
-        current = self.head
-        while current:  # Ensure to count the last node
-            count += 1
-            current = current.next
-        return count
 
     def print(self):
         current = self.head
         while current:
-            print(current.data, end="->")
+            print(current.val, end=" -> ")
             current = current.next
+            if current == self.head:
+                break
         print()
 
-    def _insertAtFirst(self, value):
-        new_node = Node(value)
-        new_node.next = self.head  # Properly link the new node
-        self.head = new_node
-
-    def _insertAtLast(self, value):
+    def insertAtLast(self, val):
+        node = Node(val)
         if self.head is None:
-            self._insertAtFirst(value)
+            self.head = node
+            node.next = node
         else:
-            new_node = Node(value)
-            current = self.head
-            while current.next:
-                current = current.next
-            current.next = new_node
+            curr = self.head
+            while curr.next != self.head:
+                curr = curr.next
+            curr.next = node
+            node.next = self.head
 
-    def insert(self, value, index: int = None):
-        if index is None:  # Correctly check if index is None
-            self._insertAtLast(value)
-        else:
-            length = self.length()
-            if index > length or index < 0:
-                raise IndexError("Index out of range")
-            new_node = Node(value)
-            if index == 0:
-                self._insertAtFirst(value)
-            elif index == length:
-                self._insertAtLast(value)
-            else:
-                current = self.head
-                for _ in range(index - 1):
-                    current = current.next
-                new_node.next = current.next
-                current.next = new_node
-
-    def delete(self, value):
-        if self.head is not None:
-            if self.head.data == value:
-                self.head = self.head.next
-                return
-            current = self.head
-            while current.next and current.next.data != value:
-                current = current.next
-            if current.next:
-                current.next = current.next.next
-            else:
-                raise ValueError("Value not found in the list")
-        else:
-            raise ValueError("List is empty")
-
-    def deleteAt(self, index: int):
-        if index < 0 or index > self.length():
-            raise IndexError("Index out of range")
+    def insertAtFirst(self, val):
+        node = Node(val)
         if self.head is None:
-            raise ValueError("List is empty")
-        if index == 0:
-            self.head = self.head.next
-            return
-        current = self.head
-        for _ in range(index - 1):
-            current = current.next
-        if current.next:
-            current.next = current.next.next
-            return
+            self.head = val
+            self.head.next = self.head
         else:
-            raise ValueError("Index out of range")
+            curr = self.head
+            while curr.next != self.head:
+                curr = curr.next
+            node.next = self.head
+            curr.next = node
+            self.head = node
 
-    def sort(self, reverse=False):
-        current = self.head
-        if current is None:
-            return
-        keys = []
-        while current:
-            keys.append(current.data)
-            current = current.next
-        keys.sort(reverse=reverse)
-        self.head = None
-        for k in keys:
-            self._insertAtLast(k)
+    def append(self, *args):
+        for val in args:
+            self.insertAtLast(val)
+
+    def _length(self):
+        curr = self.head
+        count = 0
+        while curr:
+            count += 1
+            curr = curr.next
+            if curr == self.head:
+                break
+        return count
+
+    def insertAt(self, value, position):
+        if position < 0 or position > self._length():
+            raise IndexError("Invalid position")
+        if position == 0:
+            self.insertAtFirst(value)
+        if position == self._length():
+            self.insertAtLast(value)
+        else:
+            curr = self.head
+            node = Node(value)
+            for _ in range(position - 1):
+                curr = curr.next
+                if curr == self.head:
+                    raise IndexError("Invalid position")
+
+            node.next = curr.next
+            curr.next = node
+
+    def pop(self):
+        if not self.head:
+            raise IndexError("List is empty")
+        if self.head.next == self.head:
+            val = self.head.val
+            self.head = None
+            return val
+        curr = self.head
+        prev = None
+        while curr.next != self.head:
+            prev = curr
+            curr = curr.next
+            if curr == self.head:
+                raise IndexError("Invalid position")
+        prev.next = curr.next
+        val = curr.val
+        return val
 
     def reverse(self):
+        if not self.head:
+            return
         current = self.head
         prev = None
-        while current:
+        while True:
             next_node = current.next
             current.next = prev
             prev = current
             current = next_node
+            if current == self.head:
+                break
+        self.head.next = prev
         self.head = prev
+
+    def index(self, value):
+        try:
+
+            index = -1
+            current = self.head
+            while current.next != self.head:
+                index += 1
+                if current.val == value:
+                    return index
+                current = current.next
+            return -1
+
+        except Exception as e:
+            raise e
+
+    def removeAt(self, index):
+        print(f"index {index}")
+        if index < 0 or index >= self._length():
+            raise IndexError("Invalid position")
+        if index == 0:
+            self.head = self.head.next
+            if self.head.next == self.head:
+                self.head = None
+            return True
+        current = self.head
+        prev = None
+        for _ in range(index - 1):
+            prev = current
+            current = current.next
+
+            if current.next == self.head:
+                raise IndexError("Invalid position")
+        prev.next = current.next
+        return True
+
+    def remove(self, value):
+        if not self.head:
+            return
+        index = self.index(value)
+        self.removeAt(index)
 
 
 if __name__ == "__main__":
-    ll = LinkedList()
-    ll.insert(1)
-    ll.insert(2)
-    ll.insert(3)
-    ll.print()  # Output: 1->2->3->
-    ll.insert(4, 1)  # Inserting 4 at index 1
-    ll.print()  # Output: 1->4->2->3->
-    # ll.delete(3)
-    ll.print()  # Output: 1->4->2->
-    # ll.deleteAt(1)
-    ll.print()  # Output: 1->2->
-    # ll.sort(True)
-    ll.print()  # Output: 1->2->4->
-    ll.reverse()
-    ll.print()  # Output: 4->2->1->
+    cll = CircularLinkedList()
+    cll.append(9, 28, 2, 1, 3, 78)
+    # cll.print()
+    # cll.insertAtFirst(71)
+    # cll.print()
+    # cll.insertAt(6, 7)
+    # cll.print()
+    # print(cll.remove(28))
+    cll.print()
+    print(cll.pop())
+    cll.print()
+    cll.reverse()
+    cll.print()
