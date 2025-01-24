@@ -648,5 +648,8 @@ def print_list(head):
 
 if __name__ == "__main__":
     ll = LinkedList(5)
-    ll.append(8, 92, 922, 10, 2, 9)
-    ll.divide_linked_lists(2)
+    ll.insertAtFirst(4)
+    ll.insertAtFirst(3)
+    ll.insertAtFirst(2)
+    ll.insertAtFirst(1)
+    ll.reverse_into_k_group(2)
