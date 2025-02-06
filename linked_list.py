@@ -184,21 +184,63 @@ class LinkedList:
         prev.next = current_node.next
         current_node = None
 
+    def reverse_until(self, k, head=None):
+        if not self.head or k <= 1:
+            return
+
+        current = self.head if not head else head
+        prev = None
+
+        # Reverse k nodes
+        for _ in range(k):
+            if not current:
+                break
+            next_node = current.next
+            current.next = prev
+            prev = current
+            current = next_node
+
+        if not head:
+            self.head.next = current
+            self.head = prev
+        else:
+            return prev, current
+
+    # Reverse nodes in k-group
     def reverse_into_k_group(self, k):
-        dummy = LinkedList(0)
+        dummy = Node(0)
         dummy.next = self.head
-        pt = dummy
-        while pt is not None:
+        prev_group = dummy
+
+        while True:
+            kth = prev_group
+            count = 0
+
+            # Find the kth node
+            while kth and count < k:
+                kth = kth.next
+                count += 1
+
+            if not kth:
+                break  # Less than k nodes left, no more reversal
+
+            next_group = kth.next
+            # Reverse k nodes
+            prev, curr = None, prev_group.next
             for _ in range(k):
-                tracer = pt.next
-                if tracer is None:
-                    return dummy.next
-            prev, curr = self.reverse_until(k, pt.next)
-            last_node_of_group = prev.next
-            last_node_of_group.next = curr
-            pt.next = prev
-            pt = last_node_of_group
-        return dummy.next
+                temp = curr.next
+                curr.next = prev
+                prev = curr
+                curr = temp
+
+            # Connect with the previous part
+            tail = prev_group.next
+            prev_group.next = prev
+            tail.next = next_group
+            prev_group = tail  # Move prev_group to the tail for the next iteration
+
+        self.head = dummy.next  # Update head
+
 
     def merge_n_sorted_list(self, lists):
         min_heap = []
