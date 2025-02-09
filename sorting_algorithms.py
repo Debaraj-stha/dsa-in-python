@@ -67,7 +67,7 @@ def mergesort(arr,p,r):
         
 
 def partition(l,p,r):
-    x=l[p]
+    x=l[r]
     i=p-1
     for j in range(p,r):
         if l[j]<x:
