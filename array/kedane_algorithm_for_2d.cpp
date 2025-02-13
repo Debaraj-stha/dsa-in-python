@@ -4,6 +4,14 @@
 
 using namespace std;
 
+void display(int **arr,int rows,int cols){
+    for(int i=0; i<rows; i++){
+        for(int j=0; j<cols; j++){
+            cout<<arr[i][j]<<" ";
+        }
+        cout<<endl;
+    }
+}
 // Kadane's algorithm to find maximum subarray sum
 int kadane(vector<int>& arr, int& start, int& end, int n) {
     int maxSum = INT_MIN, sum = 0;
@@ -27,7 +35,6 @@ int kadane(vector<int>& arr, int& start, int& end, int n) {
 }
 
 
-// Function to find the maximum sum submatrix
 void maxSumSubmatrix(int** arr, int rows, int cols) {
     int maxSum = INT_MIN;
     int finalLeft, finalRight, finalTop, finalBottom;
@@ -55,8 +62,6 @@ void maxSumSubmatrix(int** arr, int rows, int cols) {
             }
         }
     }
-
-    // Print result
     cout << "Maximum Sum: " << maxSum << endl;
     cout << "Top Left: (" << finalTop << ", " << finalLeft << ")" << endl;
     cout << "Bottom Right: (" << finalBottom << ", " << finalRight << ")" << endl;
@@ -70,7 +75,7 @@ int main() {
     arr[2] = new int[cols]{7, 8, 9};
 
     maxSumSubmatrix(arr, rows, cols);
-
+    display(arr,rows,cols);
     // Free memory
     for (int i = 0; i < rows; i++) {
         delete[] arr[i];
