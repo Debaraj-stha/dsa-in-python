@@ -71,9 +71,9 @@ void subarrayWithTargetSum(int arr[], int n, int target) {
 }
 
 int main() {
-    int arr[] = {1, 2, 5, -1, 8, 3, 11, 7, 4, 6, 5};
+    int arr[] = {1, 1,2,3};
     int n = sizeof(arr) / sizeof(arr[0]);
     display(arr, n);
-    subarrayWithTargetSum(arr, n, 11);
+    subarrayWithTargetSum(arr, n, 1);
     return 0;
 }
