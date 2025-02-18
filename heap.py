@@ -125,13 +125,13 @@ class MaxHeap:
 
 
 if __name__ == "__main__":
-    heap = MaxHeap()
-    heap.insert(5)
+    heap = MinHeap()
+    heap.insert(6)
     heap.insert(3)
-    heap.insert(8)
-    heap.insert(2)
+    heap.insert(4)
     heap.insert(1)
-    heap.insert(7)
+    heap.insert(2)
+    
     print("Heap:", heap.heap)
-    print("Extracted:", heap.extract_max())
+
     print("Heap:", heap.heap)
