@@ -68,6 +68,65 @@ public:
         }
         cout << endl;
     }
+    int peak(){
+        if (isEmpty()) {
+            cout << "Queue is empty" << endl;
+            return -1;
+        }
+        return arr[front];
+    }
+    int size(){
+        return rear-front+1;
+    }
+    bool isFullWithLimit(int limit){
+        return size()>=limit;
+    }
+    void clear(){
+        rear=front=-1;
+        cout<<"Queue cleared"<<endl;
+    
+    }
+    void resize(int newSize){
+        int *newArr=new int[newSize];
+        int size=this->size();
+        for (int i = 0; i < size; i++)
+        {
+            newArr[i]=arr[i];
+        }
+        delete[] arr;
+        arr=newArr;
+        capacity=newSize;
+        cout<<"Queue resized to "<<newSize<<endl;
+    }
+    void reverse(){
+        if(isEmpty()) return;
+        int start=front;
+        int end=rear;
+        while(start<end){
+            swap(arr[start],arr[end]);
+            start++;
+            end--;
+    
+        
+    }
+}
+    void sort(){
+        if(isEmpty()) return;
+        for(int i=front;i<=rear-1;i++){
+            for(int j=front;j<=rear-i-1;j++){
+                if(arr[j]>arr[j+1]){
+                    swap(arr[j],arr[j+1]);
+                }
+            }
+    
+    }
+}
+
+void swap(int &a,int &b){
+    int temp=a;
+    a=b;
+    b=temp;
+}
 };
 
 int main() {
@@ -83,6 +142,12 @@ int main() {
     
     q.dequeue();
     q.dequeue();
+    q.display();
+
+    cout << "Peak element: " << q.peak() << endl;
+    
+    cout << "Size of queue: " << q.size() << endl;
+    q.reverse();
     q.display();
     
     return 0;

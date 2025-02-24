@@ -1,46 +1,41 @@
-#include <iostream>
-
+#include<iostream>
+#include<vector>
+#include<unordered_map>
+#include<numeric>
 using namespace std;
-void swap(int *a,int *b){
-    int temp = *a;
-    *a = *b;
-    *b = temp;
+void display(const vector<int> arr){
+    for(int num : arr){
+        cout<<num<<" ";
+    }
+    cout<<endl;
 }
-void sort(int arr[] ,int n){
-    for(int i=0; i<n; i++){
-        for(int j=0; j<n-i-1; j++){
-            if(arr[j]>arr[j+1]){
-                swap(arr[j], arr[j+1]);
+void subArrayWithZeroSum(const vector<int> arr){
+    unordered_map<int,vector<int>> sumMap;
+    vector<vector<int>> subArrays;
+    int currentSum=0;
+    sumMap[0].push_back(-1);
+    for(int i=0;i<arr.size();i++){
+        currentSum+=arr[i];
+        if(sumMap.find(currentSum)!=sumMap.end()){
+            for(int index:sumMap[currentSum]){
+                vector<int> temp(arr.begin()+index+1,arr.begin()+i+1);
+                subArrays.push_back(temp);
             }
+
         }
+        sumMap[currentSum].push_back(i);
+    }
+    cout<<"Subarrays with zero sum: "<<endl;
+    for(const auto& sub:subArrays){
+        display(sub);
+        cout<<"Sum: "<<accumulate(sub.begin(),sub.end(),0)<<endl;
+        cout<<"--------"<<endl;
     }
 
 }
-void wiggleSort(int arr[], int n) {
-    sort(arr,n); 
-    for (int i = 1; i < n - 1; i += 2) {
-        swap(arr[i], arr[i + 1]);
-    }
-}
-
-void displayArray(int arr[], int n) {
-    for (int i = 0; i < n; i++) {
-        cout << arr[i] << " ";
-    }
-    cout << endl;
-}
-
 int main() {
-    int arr[] = {3, 5, 2, 1, 6, 4};
-    int n = sizeof(arr) / sizeof(arr[0]);
-
-    cout << "Original Array: ";
-    displayArray(arr, n);
-
-    wiggleSort(arr, n);
-
-    cout << "Wiggle Sorted Array: ";
-    displayArray(arr, n);
-
+    vector<int> arr = {1, 2, -3, 3, -3, 12, 17, -17, 18, 90, 9, -9};
+    display(arr);
+    subArrayWithZeroSum(arr);
     return 0;
 }
